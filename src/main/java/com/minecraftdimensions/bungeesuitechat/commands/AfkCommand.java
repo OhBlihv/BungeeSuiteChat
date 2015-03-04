@@ -10,9 +10,9 @@ import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
 public class AfkCommand implements CommandExecutor {
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String label, String[] args) {
-			PlayerManager.setPlayerAFK((Player)sender);
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+	{
+		PlayerManager.setPlayerAFK((Player)sender);
 		return true;
 	}
 

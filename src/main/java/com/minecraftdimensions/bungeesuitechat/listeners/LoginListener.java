@@ -5,7 +5,6 @@ import com.minecraftdimensions.bungeesuitechat.BungeeSuiteChat;
 import com.minecraftdimensions.bungeesuitechat.managers.ChannelManager;
 import com.minecraftdimensions.bungeesuitechat.managers.PermissionsManager;
 import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
-import com.minecraftdimensions.bungeesuitechat.objects.ServerData;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,9 +20,11 @@ public class LoginListener implements Listener {
         if ( !e.getResult().equals( PlayerLoginEvent.Result.ALLOWED ) ) {
             return;
         }
-        if ( e.getPlayer().hasPermission( "bungeesuite.*" ) ) {
+        if ( e.getPlayer().hasPermission( "bungeesuite.*" ) ) 
+        {
             PermissionsManager.addAllPermissions( e.getPlayer() );
-        } else if ( e.getPlayer().hasPermission( "bungeesuite.admin" ) ) {
+        } 
+        /*else if ( e.getPlayer().hasPermission( "bungeesuite.admin" ) ) {
             PermissionsManager.addAdminPermissions( e.getPlayer() );
         } else if ( e.getPlayer().hasPermission( "bungeesuite.mod" ) ) {
             PermissionsManager.addModPermissions( e.getPlayer() );
@@ -31,7 +32,7 @@ public class LoginListener implements Listener {
             PermissionsManager.addVIPPermissions( e.getPlayer() );
         } else if ( e.getPlayer().hasPermission( "bungeesuite.user" ) ) {
             PermissionsManager.addUserPermissions( e.getPlayer() );
-        }
+        }*/
         if ( !ChannelManager.receivedChannels ) {
             Bukkit.getScheduler().runTaskLaterAsynchronously( BungeeSuiteChat.instance, new Runnable() {
 
@@ -39,12 +40,6 @@ public class LoginListener implements Listener {
                 public void run() {
                     if ( !ChannelManager.receivedChannels ) {
                         ChannelManager.requestChannels();
-                        if ( BungeeSuiteChat.factionChat ) {
-                            ChannelManager.requestFactionChannels();
-                        }
-                        if ( BungeeSuiteChat.towny ) {
-                            ChannelManager.requestTownyChannels();
-                        }
                     }
                 }
             }, 10L );
@@ -64,9 +59,7 @@ public class LoginListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void playerJoin( PlayerJoinEvent e ) {
-        if ( ServerData.usingConnectionMessages() ) {
-            e.setJoinMessage( null );
-        }
+    	e.setJoinMessage( null );
     }
 
 

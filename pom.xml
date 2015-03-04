@@ -1,59 +1,37 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>BungeeSuiteChat</artifactId>
-    <version>0.5</version>
+    <version>0.62-AusCraft</version>
     <properties>
-        <build.number>${BUILD_NUMBER}</build.number>
+        <build.number>0.61-AusCraft</build.number>
     </properties>
 
     <repositories>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>vault-repo</id>
-            <name>vault</name>
-            <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
-        </repository>
+    <repository>
+      <id>md_5-snapshots</id>
+      <url>https://hub.spigotmc.org/nexus</url>
+    </repository>
+    <repository>
+	  <id>vault-repo</id>
+	  <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+	</repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.7.2-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
-            <version>1.2.27-SNAPSHOT</version>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.5</version>
         </dependency>
         <dependency>
-            <groupId>com.massivecraft.factions</groupId>
-            <artifactId>Factions</artifactId>
-            <version>2.2.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Factions.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.massivecraft.mcore</groupId>
-            <artifactId>mcore</artifactId>
-            <version>6.9.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/mcore.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.palmergames.bukkit</groupId>
-            <artifactId>towny</artifactId>
-            <version>0.84.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Towny.jar</systemPath>
-        </dependency>
+      		<groupId>org.bukkit</groupId>
+      		<artifactId>bukkit</artifactId>
+      		<version>1.8-R0.1-SNAPSHOT</version>
+      		<scope>provided</scope>
+       </dependency>
     </dependencies>
     <build>
-        <finalName>BungeeSuiteChat</finalName>
+        <finalName>BungeeSuiteChat-${project.version}</finalName>
         <defaultGoal>clean install</defaultGoal>
         <resources>
             <resource>
@@ -73,10 +51,6 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <compilerArguments>
-                        <O>-Xlint:all</O>
-                        <O>-Xlint:-path</O>
-                    </compilerArguments>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                 </configuration>
@@ -84,6 +58,7 @@
         </plugins>
     </build>
     <name>BungeeSuiteChat</name>
-    <url>http://minecraftdimensions.com</url>
+    <url>http://aus-craft.net</url>
     <groupId>com.minecraftdimensions</groupId>
+    <description>Originally by Bloodsplat, edited by OhBlihv.</description>
 </project>

@@ -6,15 +6,18 @@ import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
 import com.minecraftdimensions.bungeesuitechat.managers.PrefixSuffixManager;
 import com.minecraftdimensions.bungeesuitechat.objects.BSPlayer;
 import com.minecraftdimensions.bungeesuitechat.objects.ServerData;
+import com.minecraftdimensions.bungeesuitechat.tasks.PluginMessageTask;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +36,54 @@ public class MessageListener implements PluginMessageListener {
             e.printStackTrace();
         }
         assert channel != null;
+        if ( channel.equals( "hasPermission" ) ) 
+        {
+            try
+            {
+            	String player = in.readUTF();
+            	String permission = in.readUTF();
+            	String extra = in.readUTF();
+            	BSPlayer p = PlayerManager.getPlayer(player);
+            	ByteArrayOutputStream b = new ByteArrayOutputStream();
+                DataOutputStream out = new DataOutputStream( b );
+            	if(p.getPlayer().hasPermission(permission))
+            	{
+                    try 
+                    {
+                        out.writeUTF("sendHasPermission");
+                        out.writeUTF(player);
+                        out.writeUTF(permission);
+                        out.writeUTF(extra);
+                        out.writeBoolean(true);
+                    } 
+                    catch (IOException s)
+                    {
+                        s.printStackTrace();
+                    }
+                    
+            	}
+            	else
+            	{
+            		try 
+                    {
+                        out.writeUTF("sendHasPermission");
+                        out.writeUTF(player);
+                        out.writeUTF(permission);
+                        out.writeUTF(extra);
+                        out.writeBoolean(false);
+                    } 
+                    catch (IOException s)
+                    {
+                        s.printStackTrace();
+                    }
+                    
+            	}
+            	new PluginMessageTask( b ).runTaskAsynchronously( BungeeSuiteChat.instance );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+            return;
+        }
         if ( channel.equals( "SendGlobalChat" ) ) {
             try {
                 ChannelManager.getGlobalChat( in.readUTF(), in.readUTF() );
@@ -40,19 +91,6 @@ public class MessageListener implements PluginMessageListener {
                 e.printStackTrace();
             }
             return;
-        }
-        if ( channel.equals( "GetVersion" ) ) {
-            String p = null;
-            try {
-                p = in.readUTF();
-            } catch ( IOException e ) {
-            }
-            if ( p != null ) {
-                Player player = Bukkit.getPlayer( p );
-                player.sendMessage( ChatColor.RED + "Chat - " + ChatColor.GOLD + BungeeSuiteChat.instance.getDescription().getVersion() );
-            }
-            PlayerManager.sendVersion();
-            Bukkit.getConsoleSender().sendMessage( ChatColor.RED + "Chat - " + ChatColor.GOLD + BungeeSuiteChat.instance.getDescription().getVersion() );
         }
         if ( channel.equals( "SendAdminChat" ) ) {
             try {
@@ -63,9 +101,12 @@ public class MessageListener implements PluginMessageListener {
             return;
         }
         if ( channel.equals( "SendPlayer" ) ) {
-            try {
-                PlayerManager.addPlayer( new BSPlayer( in.readUTF(), in.readUTF(), in.readBoolean(), in.readUTF(), in.readUTF(), in.readBoolean(), in.readBoolean(), in.readBoolean() ) );
-            } catch ( IOException e ) {
+            try 
+            {
+                PlayerManager.addPlayer( new BSPlayer( in.readUTF(), in.readUTF(), in.readBoolean(), in.readUTF(), in.readUTF(), in.readBoolean(), in.readBoolean(), in.readUTF(), in.readBoolean() /*, in.readUTF(), in.readBoolean()*/) );
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
             return;
@@ -83,7 +124,7 @@ public class MessageListener implements PluginMessageListener {
         }
         if ( channel.equals( "SendServerData" ) ) {
             try {
-                new ServerData( in.readUTF(), in.readUTF(), in.readInt(), in.readBoolean(), in.readUTF() );
+                new ServerData( in.readUTF(), in.readUTF(), in.readBoolean(), in.readUTF() );
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
@@ -123,7 +164,6 @@ public class MessageListener implements PluginMessageListener {
                 player = in.readUTF();
                 ignoresString = in.readUTF().split( "%" );
             } catch ( IOException e ) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             final ArrayList<String> ignores = new ArrayList<>();
@@ -146,14 +186,6 @@ public class MessageListener implements PluginMessageListener {
         }
         if ( channel.equals( "Reload" ) ) {
             ChannelManager.reload();
-        }
-        if ( channel.equals( "PluginCheck" ) ) {
-            if ( BungeeSuiteChat.factionChat ) {
-                ChannelManager.requestFactionChannels();
-            }
-            if ( BungeeSuiteChat.towny ) {
-                ChannelManager.requestTownyChannels();
-            }
         }
     }
 

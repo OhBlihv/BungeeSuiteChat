@@ -19,7 +19,6 @@ public class PlayerManager {
 
     private static HashMap<String, BSPlayer> onlinePlayers = new HashMap<>();
 
-
     public static void addPlayer( BSPlayer player ) {
         onlinePlayers.put( player.getName(), player );
         player.updateDisplayName();
@@ -61,13 +60,18 @@ public class PlayerManager {
         }
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream( b );
-        try {
+        try 
+        {
             out.writeUTF( "AFKPlayer" );
             out.writeUTF( p.getName() );
             out.writeBoolean( p.isAFK() );
+            //TODO:
+            //Everyone has these Permissions on AusCraft. Change them to something useful.
             out.writeBoolean( sender.hasPermission( "bungeesuite.chat.command.afk.global" ) );
             out.writeBoolean( sender.hasPermission( "bungeesuite.chat.command.afk.display" ) );
-        } catch ( IOException s ) {
+        } 
+        catch ( IOException s )
+        {
             s.printStackTrace();
         }
         new PluginMessageTask( b ).runTaskAsynchronously( BungeeSuiteChat.instance );
@@ -209,6 +213,20 @@ public class PlayerManager {
         new PluginMessageTask( b ).runTaskAsynchronously( BungeeSuiteChat.instance );
 
     }
+    
+    public static void realnamePlayer( String name , String nick) {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream( b );
+        try {
+            out.writeUTF( "RealName" );
+            out.writeUTF( name );
+            out.writeUTF( nick );
+        } catch ( IOException s ) {
+            s.printStackTrace();
+        }
+        new PluginMessageTask( b ).runTaskAsynchronously( BungeeSuiteChat.instance );
+
+    }
 
     public static void replyToPlayer( CommandSender sender, String message ) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -247,13 +265,6 @@ public class PlayerManager {
             s.printStackTrace();
         }
         new PluginMessageTask( b ).runTaskAsynchronously( BungeeSuiteChat.instance );
-
-        if ( BungeeSuiteChat.factionChat ) {
-            ChannelManager.requestFactionChannels();
-        }
-        if ( BungeeSuiteChat.towny ) {
-            ChannelManager.requestTownyChannels();
-        }
     }
 
     public static void reload() {
@@ -271,5 +282,14 @@ public class PlayerManager {
             s.printStackTrace();
         }
         new PluginMessageTask( b ).runTaskAsynchronously( BungeeSuiteChat.instance );
+    }
+
+    public static BSPlayer getsimilarNickPlayer(String nick) {
+        for ( BSPlayer p : onlinePlayers.values() ) {
+            if ( ChatColor.stripColor(p.getNickname()).toLowerCase().contains( nick.toLowerCase() ) ) {
+                return p;
+            }
+        }
+        return getSimilarPlayer(nick);
     }
 }

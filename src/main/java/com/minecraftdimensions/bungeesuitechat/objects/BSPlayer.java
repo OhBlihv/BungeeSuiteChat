@@ -3,10 +3,12 @@ package com.minecraftdimensions.bungeesuitechat.objects;
 import com.minecraftdimensions.bungeesuitechat.BungeeSuiteChat;
 import com.minecraftdimensions.bungeesuitechat.managers.ChannelManager;
 import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class BSPlayer {
@@ -19,43 +21,71 @@ public class BSPlayer {
     private boolean dnd;
     private boolean afk;
     private ArrayList<String> ignores = new ArrayList<String>();
+    private UUID uuid;
+    
+    //Chat Alerts
+    //private String alertColour;
+    //private boolean alertToggle;
 
-    public BSPlayer( String name, String nickname, String channel, boolean muted, boolean chatspying, boolean dnd, boolean tps ) {
-        this.playername = name;
-        this.nickname = nickname;
-        this.channel = channel;
-        this.muted = muted;
-        this.chatspying = chatspying;
-        this.dnd = dnd;
+    //Not Initial Constructor?
+    public BSPlayer(String inName, String inNickname, String inChannel, boolean inMuted, boolean inChatspying, boolean inDND, UUID uuid/*, String inAlertColour, boolean inAlertToggle*/)
+    {
+        this.playername = inName;
+        this.nickname = inNickname;
+        this.channel = inChannel;
+        this.muted = inMuted;
+        this.chatspying = inChatspying;
+        this.dnd = inDND;
+        this.uuid = uuid;
+        //this.alertColour = inAlertColour;
+        //this.alertToggle = inAlertToggle;
     }
 
 
-    public BSPlayer( String name, String channel, boolean isMuted, String nickname, String tempName, boolean isSpying, boolean isDND, boolean isAFK ) {
+    //New constructor?
+    public BSPlayer(String name, String channel, boolean isMuted, String nickname, String tempName, boolean isSpying, boolean isDND, String uuid, boolean isAFK/*, String inAlertColour, boolean inAlertToggle*/)
+    {
         playername = name;
         this.channel = channel;
         muted = isMuted;
-        if ( nickname.equals( "" ) ) {
+        if (nickname.equals(""))
+        {
             this.nickname = null;
-        } else {
+        } 
+        else
+        {
             this.nickname = nickname;
         }
-        if ( tempName.equals( "" ) ) {
+        if (tempName.equals("")) 
+        {
             this.tempname = null;
-        } else {
+        } 
+        else 
+        {
             this.tempname = tempName;
         }
         this.chatspying = isSpying;
         this.dnd = isDND;
+        if(uuid != null)
+        {
+        	this.uuid = UUID.fromString(uuid);
+        }
+        //Else, the UUID cant be set yet.
         this.afk = isAFK;
-        if ( getPlayer() != null ) {
+        //this.alertColour = inAlertColour;
+        //this.alertToggle = inAlertToggle;
+        if (getPlayer() != null)
+        {
             getPlayer().setDisplayName( getDisplayingName() );
-        } else {
+        }
+        else 
+        {
             Bukkit.getScheduler().runTaskLaterAsynchronously( BungeeSuiteChat.instance, new Runnable() {
 
                 @Override
                 public void run() {
-                    if ( getPlayer() != null ) {
-                        getPlayer().setDisplayName( getDisplayingName() );
+                    if (getPlayer() != null) {
+                        getPlayer().setDisplayName(getDisplayingName());
                     }
                 }
 
@@ -63,7 +93,45 @@ public class BSPlayer {
         }
     }
 
+    //UUID
+    public UUID getUUID()
+    {
+    	return uuid;
+    }
+    
+    //Alerts
+    /*public boolean getAlertToggle()
+    {
+    	return alertToggle;
+    }
+    
+    public void setAlertToggle(boolean inAlertToggle)
+    {
+    	alertToggle = inAlertToggle;
+    }
+    
+    public String getAlertColour()
+    {
+    	return alertColour;
+    }
+    
+    public void setAlertColour(String inAlertColour)
+    {
+    	alertColour = inAlertColour;
+    }*/
+    
+    //-----
+    
+    public boolean isAFK()
+    {
+        return afk;
+    }
 
+    public void setAFK(boolean afk) 
+    {
+        this.afk = afk;
+    }
+    
     public String getName() {
         return playername;
     }
@@ -73,7 +141,7 @@ public class BSPlayer {
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer( playername );
+        return Bukkit.getPlayer(playername);
     }
 
     public void sendMessage( String message ) {
@@ -151,14 +219,6 @@ public class BSPlayer {
 
     public boolean isOnline() {
         return PlayerManager.isPlayerOnline( getName() );
-    }
-
-    public boolean isAFK() {
-        return afk;
-    }
-
-    public void setAFK( boolean afk ) {
-        this.afk = afk;
     }
 
     public String getDisplayingName() {

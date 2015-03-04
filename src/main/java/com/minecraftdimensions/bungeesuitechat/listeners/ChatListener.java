@@ -1,11 +1,13 @@
 package com.minecraftdimensions.bungeesuitechat.listeners;
 
-import com.minecraftdimensions.bungeesuitechat.BungeeSuiteChat;
+import java.util.regex.Pattern;
+
 import com.minecraftdimensions.bungeesuitechat.Utilities;
 import com.minecraftdimensions.bungeesuitechat.managers.ChannelManager;
 import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
 import com.minecraftdimensions.bungeesuitechat.objects.BSPlayer;
 import com.minecraftdimensions.bungeesuitechat.objects.ServerData;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -22,23 +24,17 @@ public class ChatListener implements Listener {
         }
         BSPlayer p = PlayerManager.getPlayer( e.getPlayer() );
         if ( p == null ) {
-            Bukkit.getConsoleSender().sendMessage( ChatColor.DARK_RED + "Player did not connect properly through BungeeCord, Chat canceled!" );
-            e.setCancelled( true );
-            return;
-        }
-        if ( !ChannelManager.playerHasPermissionToTalk( p ) ) {
-            e.setCancelled( true );
-            e.getPlayer().sendMessage( ChatColor.RED + "You do not have permission to talk in this channel" );
+            Bukkit.getConsoleSender().sendMessage( ChatColor.DARK_RED + "Player did not connect properly through BungeeCord, Chat will be local only!" );
+            //e.setCancelled( true );
+            e.getPlayer().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ChatColor.ITALIC + "ERROR: " + ChatColor.RED + "Reconnect to fix your chat.");
             return;
         }
         e.setFormat( p.getChannelFormat() );
-        if ( ChannelManager.isLocal( p.getChannel() ) ) {
-            e.getRecipients().removeAll( ChannelManager.getNonLocal( e.getPlayer() ) );
-            e.getRecipients().removeAll( ChannelManager.getIgnores( e.getPlayer() ) );
-        } else if ( ChannelManager.isServer( p.getChannel() ) ) {
+    	if ( ChannelManager.isServer( p.getChannel() ) ) {
             e.getRecipients().clear();
             e.getRecipients().addAll( ChannelManager.getServerPlayers() );
             e.getRecipients().removeAll( ChannelManager.getIgnores( e.getPlayer() ) );
+            doPlayerAlerts(e);
         } else if ( ChannelManager.isGlobal( p.getChannel() ) ) {
             e.getRecipients().clear();
             e.getRecipients().addAll( ChannelManager.getGlobalPlayers() );
@@ -46,22 +42,6 @@ public class ChatListener implements Listener {
         } else if ( ChannelManager.isAdmin( p.getChannel() ) ) {
             e.getRecipients().clear();
             e.getRecipients().addAll( ChannelManager.getAdminPlayers() );
-        } else if ( BungeeSuiteChat.factionChat && ChannelManager.isFactionChannel( p.getChannel() ) ) {
-            if ( ChannelManager.isFaction( p.getChannel() ) ) {
-                e.getRecipients().clear();
-                e.getRecipients().addAll( ChannelManager.getFactionPlayers( e.getPlayer() ) );
-            } else if ( ChannelManager.isFactionAlly( p.getChannel() ) ) {
-                e.getRecipients().clear();
-                e.getRecipients().addAll( ChannelManager.getFactionAllyPlayers( e.getPlayer() ) );
-            }
-        } else if ( BungeeSuiteChat.towny && ChannelManager.isTownyChannel( p.getChannel() ) ) {
-            if ( p.getChannel().getName().equals( "Town" ) ) {
-                e.getRecipients().clear();
-                e.getRecipients().addAll( ChannelManager.getTownPlayers( e.getPlayer() ) );
-            } else if ( p.getChannel().getName().equals( "Nation" ) ) {
-                e.getRecipients().clear();
-                e.getRecipients().addAll( ChannelManager.getNationPlayers( e.getPlayer() ) );
-            }
         }
     }
 
@@ -94,6 +74,20 @@ public class ChatListener implements Listener {
             Utilities.logChat( String.format( e.getFormat(), p.getDisplayingName(), e.getMessage() ) );
         }
 
+    }
+    
+    private String doPlayerAlerts(AsyncPlayerChatEvent e)
+    {
+    	BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
+    	if(e.getMessage().contains(p.getDisplayingName()))
+    	{
+    		String fixedString;
+    		Pattern AlertPattern = Pattern.compile(p.getDisplayingName());
+    		fixedString = AlertPattern.matcher(e.getMessage()).replaceAll(ChatColor.YELLOW + "" + ChatColor.ITALIC + p.getDisplayingName());
+    		Utilities.colorize(fixedString);
+    		return fixedString;
+    	}
+		return e.getMessage();
     }
 
 
