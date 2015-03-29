@@ -18,14 +18,15 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void setFormatChat( AsyncPlayerChatEvent e ) {
-        if ( e.isCancelled() ) {
+    public void setFormatChat(AsyncPlayerChatEvent e) {
+        if ( e.isCancelled() ) 
+        {
             return;
         }
-        BSPlayer p = PlayerManager.getPlayer( e.getPlayer() );
+        BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
         if ( p == null ) {
             Bukkit.getConsoleSender().sendMessage( ChatColor.DARK_RED + "Player did not connect properly through BungeeCord, Chat will be local only!" );
-            //e.setCancelled( true );
+            e.setCancelled( true );
             e.getPlayer().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ChatColor.ITALIC + "ERROR: " + ChatColor.RED + "Reconnect to fix your chat.");
             return;
         }
@@ -34,11 +35,12 @@ public class ChatListener implements Listener {
             e.getRecipients().clear();
             e.getRecipients().addAll( ChannelManager.getServerPlayers() );
             e.getRecipients().removeAll( ChannelManager.getIgnores( e.getPlayer() ) );
-            doPlayerAlerts(e);
+            e.setMessage(doPlayerAlerts(e));
         } else if ( ChannelManager.isGlobal( p.getChannel() ) ) {
             e.getRecipients().clear();
             e.getRecipients().addAll( ChannelManager.getGlobalPlayers() );
             e.getRecipients().removeAll( ChannelManager.getIgnores( e.getPlayer() ) );
+            e.setMessage(doPlayerAlerts(e));
         } else if ( ChannelManager.isAdmin( p.getChannel() ) ) {
             e.getRecipients().clear();
             e.getRecipients().addAll( ChannelManager.getAdminPlayers() );
@@ -78,16 +80,25 @@ public class ChatListener implements Listener {
     
     private String doPlayerAlerts(AsyncPlayerChatEvent e)
     {
-    	BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
-    	if(e.getMessage().contains(p.getDisplayingName()))
+    	String fixedString = e.getMessage();
+    	for(BSPlayer player : PlayerManager.getOnlinePlayers())
     	{
-    		String fixedString;
-    		Pattern AlertPattern = Pattern.compile(p.getDisplayingName());
-    		fixedString = AlertPattern.matcher(e.getMessage()).replaceAll(ChatColor.YELLOW + "" + ChatColor.ITALIC + p.getDisplayingName());
-    		Utilities.colorize(fixedString);
-    		return fixedString;
+    		if(e.getMessage().contains(player.getName()))
+        	{
+        		fixedString = Pattern.compile(player.getName()).matcher(e.getMessage()).replaceAll(ChatColor.YELLOW + "" + ChatColor.ITALIC + player.getDisplayingName());
+        		Utilities.colorize(fixedString);
+        	}
+        	else if(player.hasNickname())
+        	{
+        		if(e.getMessage().contains(player.getNickname()))
+        		{
+            		fixedString = Pattern.compile(player.getNickname()).matcher(e.getMessage()).replaceAll(ChatColor.YELLOW + "" + ChatColor.ITALIC + player.getNickname());
+            		Utilities.colorize(fixedString);
+        		}
+        	}
     	}
-		return e.getMessage();
+    	
+		return fixedString;
     }
 
 

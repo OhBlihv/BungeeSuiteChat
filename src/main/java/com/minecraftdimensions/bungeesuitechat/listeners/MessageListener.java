@@ -6,7 +6,6 @@ import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
 import com.minecraftdimensions.bungeesuitechat.managers.PrefixSuffixManager;
 import com.minecraftdimensions.bungeesuitechat.objects.BSPlayer;
 import com.minecraftdimensions.bungeesuitechat.objects.ServerData;
-import com.minecraftdimensions.bungeesuitechat.tasks.PluginMessageTask;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,9 +14,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +33,7 @@ public class MessageListener implements PluginMessageListener {
             e.printStackTrace();
         }
         assert channel != null;
-        if ( channel.equals( "hasPermission" ) ) 
+        /*if ( channel.equals( "hasPermission" ) ) 
         {
             try
             {
@@ -83,7 +80,7 @@ public class MessageListener implements PluginMessageListener {
                 e.printStackTrace();
             }
             return;
-        }
+        }*/
         if ( channel.equals( "SendGlobalChat" ) ) {
             try {
                 ChannelManager.getGlobalChat( in.readUTF(), in.readUTF() );
