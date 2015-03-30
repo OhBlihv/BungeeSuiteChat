@@ -59,9 +59,8 @@ public class Utilities {
 
     public static String colorize( String input ) {
         //return ChatColor.translateAlternateColorCodes( '&', input );
-    	String fixedString;
-		Pattern chatColorPattern = Pattern.compile("(?i)&([0-9a-f-l-orR])"); // Credit to t3hk0d3 in ChatManager(With slight edits)
-		fixedString = chatColorPattern.matcher(input).replaceAll("\u00A7$1"); // And here too
+    	Pattern chatColorPattern = Pattern.compile("(?i)&([0-9A-Fa-f-l-oL-OrR])");
+		String fixedString = chatColorPattern.matcher(input).replaceAll("\u00A7$1");
 		return fixedString;
     }
 

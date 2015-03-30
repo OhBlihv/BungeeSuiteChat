@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>BungeeSuiteChat</artifactId>
-    <version>0.62-AusCraft</version>
+    <version>0.63-AusCraft</version>
     <properties>
         <build.number>0.61-AusCraft</build.number>
     </properties>
@@ -29,6 +29,13 @@
       		<version>1.8-R0.1-SNAPSHOT</version>
       		<scope>provided</scope>
        </dependency>
+       <dependency>
+            <groupId>ru.tehkode</groupId>
+    		<artifactId>PermissionsEx</artifactId>
+   			<version>1.23.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/PermissionsEx-1.23.1.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <finalName>BungeeSuiteChat-${project.version}</finalName>

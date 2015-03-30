@@ -7,26 +7,43 @@ import com.minecraftdimensions.bungeesuitechat.managers.ChannelManager;
 import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
 import com.minecraftdimensions.bungeesuitechat.objects.BSPlayer;
 
-public class AdminCommand implements CommandExecutor {
+public class AdminCommand implements CommandExecutor 
+{
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String label, String[] args) {
-		if(args.length>0){
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
+	{
+		if(args.length > 0)
+		{
 			String message = "";
-			for(String data: args){
-					message+=data+" ";
+			for(String data: args)
+			{
+				message += data + " ";
 			}
-			if(message.charAt(0)=='/'){
-				message=" "+message;
+			if(message.charAt(0) == '/') 
+			{
+				message = " " + message;
 			}
-			BSPlayer p = PlayerManager.getPlayer(sender);
-			String channel = p.getChannelName();
-			p.setChannel("Admin");
-			p.getPlayer().chat(message);
-			p.setChannel(channel);
-		}else{
-			ChannelManager.togglePlayerToChannel(sender, "Admin");
+			BSPlayer player = PlayerManager.getPlayer(sender);
+			String channel = player.getChannelName();
+			player.setChannel("Admin");
+			player.getPlayer().chat(message);
+			player.setChannel(channel);
+		}
+		else
+		{
+			//ChannelManager.togglePlayerToChannel(sender, "Admin");
+			BSPlayer player = PlayerManager.getPlayer(sender);
+			if(player.getChannelName().equals("Admin"))
+			{
+				//player.setChannel("Global");
+				ChannelManager.togglePlayerToChannel(sender, "Global");
+			}
+			else
+			{
+				//player.setChannel("Admin");
+				ChannelManager.togglePlayerToChannel(sender, "Admin");
+			}
 		}
 		return true;
 	}
