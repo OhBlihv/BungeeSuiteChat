@@ -18,12 +18,6 @@ commands:
         permission: bungeesuite.chat.command.afk
         permission-message: §cYou do not have permission for this command
         usage: /<command>
-    chatspy:
-        description: Allows players to see all messages
-        aliases: [cspy,spy,socialspy]
-        permission: bungeesuite.chat.command.chatspy
-        permission-message: §cYou do not have permission for this command
-        usage: /<command>
     global:
         description: Send messages/toggle to the global channel
         aliases: [g,globalchat,globalchannel,gchannel]
@@ -44,14 +38,6 @@ commands:
         permission: bungeesuite.chat.command.ignores
         permission-message: §cYou do not have permission for this command
         usage: /<command>
-    local:
-        description: Send messages/toggle to the local channel
-        aliases: [l,lc,localchannel,lchannel,channellocal]
-        permission: bungeesuite.chat.channel.local
-        permission-message: §cYou do not have permission for this channel
-        usage: |
-            /<command> - toggles to local channel
-            /<command> (message) - sends message to the local channel
     me:
         description: Sends an emote to the chat on your server
         aliases: [emote]
@@ -100,14 +86,6 @@ commands:
         permission: bungeesuite.chat.command.reply
         permission-message: §cYou do not have permission for this command
         usage: /<command> (message)
-    server:
-        description: Send messages/toggle to the server channel
-        aliases: [s,sc,serverchannel,schannel,channelserver]
-        permission: bungeesuite.chat.channel.server
-        permission-message: §cYou do not have permission for this channel
-        usage: |
-            /<command> - toggles to the server channel
-            /<command> (message) - sends a message to the server channel
     tempmute:
         description: Temporarily mutes a player
         aliases: [tmute]

@@ -5,18 +5,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
 
-public class MessageCommand implements CommandExecutor 
+public class MessageCommand implements CommandExecutor
 {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		if (args.length > 1) 
+		if (args.length > 1)
 		{
 			String message = "";
-			for(String data: args)
+			for (String data : args)
 			{
-				if(!data.equalsIgnoreCase(args[0]))
+				if (!data.equalsIgnoreCase(args[0]))
 				{
 					message += data + " ";
 				}

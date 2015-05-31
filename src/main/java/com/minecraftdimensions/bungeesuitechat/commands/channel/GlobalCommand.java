@@ -11,18 +11,18 @@ public class GlobalCommand implements CommandExecutor
 {
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		if(args.length > 0)
+		if (args.length > 0)
 		{
 			String message = "";
-			for(String data: args)
+			for (String data : args)
 			{
-					message+=data+" ";
+				message += data + " ";
 			}
-			if(message.charAt(0)=='/')
+			if (message.charAt(0) == '/')
 			{
-				message=" "+message;
+				message = " " + message;
 			}
 			BSPlayer p = PlayerManager.getPlayer(sender);
 			String channel = p.getChannelName();

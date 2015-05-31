@@ -1,20 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
     <artifactId>BungeeSuiteChat</artifactId>
-    <version>0.63-AusCraft</version>
-    <properties>
-        <build.number>0.61-AusCraft</build.number>
-    </properties>
+    <version>0.64-AusCraft</version>
+    
+    <name>BungeeSuiteChat</name>
+    <url>http://aus-craft.net</url>
+    <groupId>com.minecraftdimensions</groupId>
+    <description>Originally by Bloodsplat, edited by OhBlihv.</description>
 
     <repositories>
-    <repository>
-      <id>md_5-snapshots</id>
-      <url>https://hub.spigotmc.org/nexus</url>
-    </repository>
-    <repository>
-	  <id>vault-repo</id>
-	  <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
-	</repository>
+	    <repository>
+		      <id>md_5-snapshots</id>
+		      <url>https://hub.spigotmc.org/nexus</url>
+	    </repository>
+	    <repository>
+			  <id>vault-repo</id>
+			  <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+		</repository>
     </repositories>
 
     <dependencies>
@@ -24,8 +27,8 @@
             <version>1.5</version>
         </dependency>
         <dependency>
-      		<groupId>org.bukkit</groupId>
-      		<artifactId>bukkit</artifactId>
+      		<groupId>org.spigotmc</groupId>
+      		<artifactId>spigot-api</artifactId>
       		<version>1.8-R0.1-SNAPSHOT</version>
       		<scope>provided</scope>
        </dependency>
@@ -46,7 +49,7 @@
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources</directory>
                 <includes>
-                    <include>*.yml</include>
+                    <include>*</include>
                 </includes>
             </resource>
         </resources>
@@ -56,16 +59,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <name>BungeeSuiteChat</name>
-    <url>http://aus-craft.net</url>
-    <groupId>com.minecraftdimensions</groupId>
-    <description>Originally by Bloodsplat, edited by OhBlihv.</description>
 </project>

@@ -1,51 +1,44 @@
 package com.minecraftdimensions.bungeesuitechat.objects;
 
-
-public class Channel {
+public class Channel
+{
 	private String name;
 	private String format;
-	private boolean muted;
 	public boolean isDefault;
-	
-	public Channel(String name, String format, String owner, boolean muted, boolean isDefault, boolean open){
+
+	public Channel(String name, String format, boolean isDefault)
+	{
 		this.name = name;
 		this.format = format;
-		this.muted = muted;
 		this.isDefault = isDefault;
 	}
-	
-	public Channel(String serialised){
+
+	public Channel(String serialised)
+	{
 		String data[] = serialised.split("~");
 		name = data[0];
 		format = data[1];
-		muted = Boolean.parseBoolean(data[3]);
-		isDefault = Boolean.parseBoolean(data[4]);
+		isDefault = Boolean.parseBoolean(data[2]);
 	}
-	
-	
-	public String getName(){
+
+	public String getName()
+	{
 		return name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-	public String getFormat(){
+
+	public String getFormat()
+	{
 		return format;
 	}
-	public void setFormat(String format){
-		this.format=format;
+
+	public boolean isDefault()
+	{
+		return true;
 	}
-	public boolean isMuted(){
-		return muted;
-	}
-	public void setMuted(boolean mute){
-		this.muted = mute;
-	}
-	public boolean isDefault(){
-		return isDefault;
-	}
-	public String serialise(){
-		return name+"~"+format+"~"+muted+"~"+isDefault;
+
+	public String serialise()
+	{
+		return name + "~" + format + "~" + isDefault;
 	}
 
 }

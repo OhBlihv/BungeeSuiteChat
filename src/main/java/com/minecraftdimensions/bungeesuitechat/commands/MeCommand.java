@@ -15,7 +15,7 @@ public class MeCommand implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		//If muted, dont allow the player to bypass the mute.
+		// If muted, dont allow the player to bypass the mute.
 		if (PlayerManager.getPlayer(sender).isMuted())
 		{
 			return true;
@@ -24,17 +24,17 @@ public class MeCommand implements CommandExecutor
 		{
 			BSPlayer bsp = PlayerManager.getPlayer(sender);
 			String pName = bsp.getName();
-			if(bsp.hasNickname())
+			if (bsp.hasNickname())
 			{
 				pName = bsp.getNickname();
 			}
-			String message = ChatColor.DARK_PURPLE + " X " + ChatColor.GOLD + pName + ChatColor.GRAY + " ";
-			for(String arg : args)
+			String message = ChatColor.DARK_PURPLE + " ~ " + ChatColor.GOLD + pName + ChatColor.GRAY + " ";
+			for (String arg : args)
 			{
 				message += arg + " ";
 			}
 			Player p = (Player) sender;
-			for(Player pl:p.getWorld().getPlayers())
+			for (Player pl : p.getWorld().getPlayers())
 			{
 				pl.sendMessage(message);
 			}

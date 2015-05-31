@@ -7,12 +7,13 @@ import org.bukkit.entity.Player;
 
 import com.minecraftdimensions.bungeesuitechat.managers.PlayerManager;
 
-public class AfkCommand implements CommandExecutor {
+public class AfkCommand implements CommandExecutor
+{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		PlayerManager.setPlayerAFK((Player)sender);
+		PlayerManager.setPlayerAFK((Player) sender);
 		return true;
 	}
 

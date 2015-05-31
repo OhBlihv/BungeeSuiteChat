@@ -13,64 +13,65 @@ import com.minecraftdimensions.bungeesuitechat.objects.BSPlayer;
 
 public class AFKListener implements Listener
 {
-	
+
 	@EventHandler
 	public void playerCommand(PlayerCommandPreprocessEvent e)
 	{
-		BSPlayer p =PlayerManager.getPlayer(e.getPlayer());
-		if(p == null)
+		BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
+		if (p == null)
 		{
 			return;
 		}
-		if(p.isAFK() && e.getMessage().equalsIgnoreCase("/afk"))
+		if (p.isAFK() && e.getMessage().equalsIgnoreCase("/afk"))
 		{
 			PlayerManager.setPlayerAFK(e.getPlayer());
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
-	public void playerChat(AsyncPlayerChatEvent e) 
+	public void playerChat(AsyncPlayerChatEvent e)
 	{
 		BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
-		if(p == null)
+		if (p == null)
 		{
 			return;
 		}
-		if(p.isAFK())
+		if (p.isAFK())
 		{
 			PlayerManager.setPlayerAFK(e.getPlayer());
 		}
 	}
-	
+
 	@EventHandler
 	public void playerMove(PlayerMoveEvent e)
 	{
-		if(!e.getTo().getBlock().equals(e.getFrom().getBlock())){
+		if (!e.getTo().getBlock().equals(e.getFrom().getBlock()))
+		{
 			BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
-			if(p == null)
+			if (p == null)
 			{
 				return;
 			}
-			if(p.isAFK())
+			if (p.isAFK())
 			{
 				PlayerManager.setPlayerAFK(e.getPlayer());
 			}
 		}
 	}
-	
-    @EventHandler(priority = EventPriority.LOWEST)
+
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerMove(PlayerQuitEvent e)
-    {
-    		BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
-    		if(p == null)
-    		{
-    			return;
-    		}
-			if(p.isAFK())
-			{
-				PlayerManager.setPlayerAFK(e.getPlayer());
-			}
+	{
+		BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
+		if (p == null)
+		{
+			return;
+		}
+		if (p.isAFK())
+		{
+			PlayerManager.setPlayerAFK(e.getPlayer());
+		}
 	}
 
 }
