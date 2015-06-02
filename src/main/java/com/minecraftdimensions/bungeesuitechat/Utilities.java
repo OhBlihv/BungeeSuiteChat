@@ -29,34 +29,15 @@ public class Utilities
 		}
 		else
 		{
+			format = format.replace("{channel}", "?");
 			format = format.replace("{player}", player.getDisplayName());
 		}
 		format = format.replace("{shortname}", ServerData.getServerShortName());
 		format = format.replace("{world}", player.getWorld().getName());
 		format = format.replace("{server}", ServerData.getServerName());
 
-		if (BungeeSuiteChat.usingVault)
-		{
-			format = format.replace("{permgroup}", PrefixSuffixManager.getPlayersPermGroup(player));
-			format = format.replace("{permgroupsuffix}", PrefixSuffixManager.getPlayersPermGroupSuffix(player));
-			format = format.replace("{permplayersuffix}", PrefixSuffixManager.getPlayersPermSuffix(player));
-			format = format.replace("{permprefix}", PrefixSuffixManager.getPermPrefix(player));
-			format = format.replace("{permsuffix}", PrefixSuffixManager.getPermSuffix(player));
-			format = format.replace("{permgroupprefix}", PrefixSuffixManager.getPlayersGroupPrefix(player));
-			format = format.replace("{permplayerprefix}", PrefixSuffixManager.getPlayersPermPrefix(player));
-		}
-		if (PrefixSuffixManager.suffix)
-		{
-			String group = PrefixSuffixManager.getPlayersSuffixGroup(player);
-			format = format.replace("{suffixgroup}", PrefixSuffixManager.getPlayersSuffixGroup(player));
-			format = format.replace("{suffix}", PrefixSuffixManager.getPlayersSuffix(group));
-		}
-		if (PrefixSuffixManager.prefix)
-		{
-			String group = PrefixSuffixManager.getPlayersPrefixGroup(player);
-			format = format.replace("{prefixgroup}", PrefixSuffixManager.getPlayersPrefixGroup(player));
-			format = format.replace("{prefix}", PrefixSuffixManager.getPlayersPrefix(group));
-		}
+		format = format.replace("{permprefix}", PrefixSuffixManager.getPermPrefix(player));
+		format = format.replace("{permsuffix}", PrefixSuffixManager.getPermSuffix(player));
 
 		format = format.replace("{message}", "%2$s");
 		return colorize(format);
@@ -64,10 +45,7 @@ public class Utilities
 
 	public static String colorize(String input)
 	{
-		// return ChatColor.translateAlternateColorCodes( '&', input );
-		Pattern chatColorPattern = Pattern.compile("(?i)&([0-9A-Fa-f-l-oL-OrR])");
-		String fixedString = chatColorPattern.matcher(input).replaceAll("\u00A7$1");
-		return fixedString;
+		return Pattern.compile("(?i)&([0-9A-Fa-f-l-oL-OrR])").matcher(input).replaceAll("\u00A7$1");
 	}
 
 	public static void logChat(String chat)
@@ -86,7 +64,7 @@ public class Utilities
 		new PluginMessageTask(b).runTaskAsynchronously(BungeeSuiteChat.instance);
 	}
 
-	public static String SetMessage(Player player, String message)
+	public static String setMessage(Player player, String message)
 	{
 		if (player.hasPermission("bungeesuite.chat.color"))
 		{
@@ -97,10 +75,7 @@ public class Utilities
 
 	public static String stripColours(String toFix)
 	{
-		String fixedString = ChatColor.stripColor(toFix);
-		// String fixedString =
-		// Pattern.compile("[&](.)").matcher(toFix).replaceAll("");
-		return fixedString;
+		return ChatColor.stripColor(toFix);
 	}
 
 }

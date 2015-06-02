@@ -5,13 +5,11 @@ public class ServerData
 	
 	private static String serverName;
 	private static String shortName;
-	private static String globalRegex;
 
-	public ServerData(String inName, String inShortName, String inRegex)
+	public ServerData(String inName, String inShortName)
 	{
 		serverName = inName;
 		shortName = inShortName;
-		globalRegex = inRegex;
 	}
 
 	public static String getServerName()
@@ -31,7 +29,7 @@ public class ServerData
 
 	public static String getGlobalRegex()
 	{
-		return globalRegex;
+		return "[a-zA-Z0-9\\-]+[\\.\\,][a-zA-Z0-9\\-]+[\\.\\,][a-zA-Z0-9\\-]+[\\.\\,]?[a-zA-Z0-9\\-]*";
 	}
 	
 }

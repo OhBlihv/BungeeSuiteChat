@@ -21,33 +21,34 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 public class ChatListener implements Listener
 {
 
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void setFormatChat(AsyncPlayerChatEvent e)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void setFormatChat(AsyncPlayerChatEvent event)
 	{
-		if (e.isCancelled())
+		BSPlayer player = PlayerManager.getPlayer(event.getPlayer());
+		if (player == null)
 		{
+			event.setCancelled(true);
+			event.getPlayer().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ChatColor.ITALIC + "ERROR: " + ChatColor.RED + "Reconnect to fix your chat.");
 			return;
 		}
-		BSPlayer p = PlayerManager.getPlayer(e.getPlayer());
-		if (p == null)
+		
+		event.setFormat(player.getChannelFormat());
+		event.getRecipients().clear();
+		
+		if (ChannelManager.isGlobal(player.getChannel()))
 		{
-			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Player did not connect properly through BungeeCord, Chat will be local only!");
-			e.setCancelled(true);
-			e.getPlayer().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ChatColor.ITALIC + "ERROR: " + ChatColor.RED + "Reconnect to fix your chat.");
-			return;
+			event.getRecipients().addAll(ChannelManager.getGlobalPlayers());
+			event.getRecipients().removeAll(ChannelManager.getIgnores(event.getPlayer()));
+			event.setMessage(doPlayerAlerts(event));
 		}
-		e.setFormat(p.getChannelFormat());
-		if (ChannelManager.isGlobal(p.getChannel()))
+		else if (ChannelManager.isAdmin(player.getChannel()))
 		{
-			e.getRecipients().clear();
-			e.getRecipients().addAll(ChannelManager.getGlobalPlayers());
-			e.getRecipients().removeAll(ChannelManager.getIgnores(e.getPlayer()));
-			e.setMessage(doPlayerAlerts(e));
+			event.getRecipients().addAll(ChannelManager.getAdminPlayers());
 		}
-		else if (ChannelManager.isAdmin(p.getChannel()))
+		else
 		{
-			e.getRecipients().clear();
-			e.getRecipients().addAll(ChannelManager.getAdminPlayers());
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.DARK_RED + "Invalid Channel. Try reconnecting.");
 		}
 	}
 
@@ -55,7 +56,7 @@ public class ChatListener implements Listener
 	public void setVariables(AsyncPlayerChatEvent e)
 	{
 		e.setFormat(Utilities.ReplaceVariables(e.getPlayer(), e.getFormat()));
-		e.setMessage(Utilities.SetMessage(e.getPlayer(), e.getMessage()));
+		e.setMessage(Utilities.setMessage(e.getPlayer(), e.getMessage()));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -98,10 +99,12 @@ public class ChatListener implements Listener
 					player.getPlayer().playSound(player.getPlayer().getLocation(), Sound.ORB_PICKUP, 10F, (float) 0.5);
 					if (bsPlayer.hasNickname())
 					{
-						return message.replaceAll(word, ChatColor.YELLOW + "" + ChatColor.ITALIC + bsPlayer.getNickname() + PermissionsEx.getUser(event.getPlayer().getName()).getSuffix());
+						return message.replaceAll(word, ChatColor.YELLOW + "" + ChatColor.ITALIC + bsPlayer.getNickname()
+								+ Utilities.colorize(PermissionsEx.getUser(event.getPlayer().getName()).getSuffix()));
 					}
 					
-					return message.replaceAll(word, ChatColor.YELLOW + "" + ChatColor.ITALIC + player.getName() + PermissionsEx.getUser(event.getPlayer().getName()).getSuffix());
+					return message.replaceAll(word, ChatColor.YELLOW + "" + ChatColor.ITALIC + player.getName()
+							+ Utilities.colorize(PermissionsEx.getUser(event.getPlayer().getName()).getSuffix()));
 				}
 			}
 		}

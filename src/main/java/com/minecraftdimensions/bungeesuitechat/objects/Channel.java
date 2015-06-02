@@ -4,13 +4,11 @@ public class Channel
 {
 	private String name;
 	private String format;
-	public boolean isDefault;
 
-	public Channel(String name, String format, boolean isDefault)
+	public Channel(String name, String format)
 	{
 		this.name = name;
 		this.format = format;
-		this.isDefault = isDefault;
 	}
 
 	public Channel(String serialised)
@@ -18,7 +16,6 @@ public class Channel
 		String data[] = serialised.split("~");
 		name = data[0];
 		format = data[1];
-		isDefault = Boolean.parseBoolean(data[2]);
 	}
 
 	public String getName()
@@ -38,7 +35,7 @@ public class Channel
 
 	public String serialise()
 	{
-		return name + "~" + format + "~" + isDefault;
+		return name + "~" + format;
 	}
 
 }

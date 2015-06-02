@@ -18,14 +18,13 @@ public class BungeeSuiteChat extends JavaPlugin
 	public static String OUTGOING_PLUGIN_CHANNEL = "BSChat";
 	public static String INCOMING_PLUGIN_CHANNEL = "BungeeSuiteChat";
 	public static Chat CHAT = null;
-	public static boolean usingVault;
 
 	@Override
 	public void onEnable()
 	{
 		instance = this;
 		registerCommands();
-		usingVault = setupVault();
+		setupVault();
 		registerListeners();
 	}
 
@@ -61,11 +60,11 @@ public class BungeeSuiteChat extends JavaPlugin
 		getCommand("unmuteall").setExecutor(new UnMuteAllCommand());
 	}
 
-	private boolean setupVault()
+	private void setupVault()
 	{
 		if (!packageExists("net.milkbowl.vault.chat.Chat"))
 		{
-			return false;
+			return;
 		}
 		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 		if (chatProvider != null)
@@ -76,7 +75,6 @@ public class BungeeSuiteChat extends JavaPlugin
 		{
 			this.getLogger().info("No Vault found");
 		}
-		return (CHAT != null);
 	}
 
 	private boolean packageExists(String... packages)

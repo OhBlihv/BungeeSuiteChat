@@ -47,7 +47,7 @@ public class ChannelManager
 		ArrayList<Channel> chan = new ArrayList<>();
 		for (Channel c : channels)
 		{
-			if (c.isDefault)
+			if (c.isDefault())
 			{
 				chan.add(c);
 			}
@@ -286,7 +286,7 @@ public class ChannelManager
 	public static boolean playerHasPermissionToTalk(BSPlayer p)
 	{
 		Channel c = p.getChannel();
-		if (c.isDefault)
+		if (c.isDefault())
 		{
 			if (ChannelManager.isGlobal(c))
 			{
